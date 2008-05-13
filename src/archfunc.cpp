@@ -18,7 +18,11 @@ using namespace std;
 #include "file.h"
 #include "system.h"
 #include "tmpstore.h"
-#include "bzip2.h"
+#include "archfunc.h"
+#include <stdio.h>
+
+
+// bzip2 section
 
 char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS] =
 	{"0.9.0c", "1.0.2", "1.0.3", "1.0.4"};
@@ -33,14 +37,12 @@ void find_bzip2_compressors() {
 	system(command.c_str());
 
 	FILE * fp;
-	char * line = NULL;
+	char line[2 * CHAR_MAX];
 	string fname;
-	size_t len = 0;
-	ssize_t read;
 	fp = fopen(tempfile.c_str(), "r");
 	if (fp == NULL)
 		exit(EXIT_FAILURE);
-	while ((read = getline(&line, &len, fp)) != -1) {
+	while (fgets(line, 2 * CHAR_MAX, fp) != NULL) {	
 		// printf("Retrieved line of length %zu :\n", read);
 		// printf("%s", line);
 		char *v = strstr(line, "Version");
@@ -58,8 +60,6 @@ void find_bzip2_compressors() {
 		}
 		fname = line;
 	}
-	if (line)
-		free(line);
 	if (verbose) {
 		printf("found bzip2 compressors/decompressors:\n");
 		for (int i = 0; i < MAX_BZIP2_COMPRESSORS; ++i)
@@ -74,4 +74,45 @@ int find_bz2_compression_level(string file) {
 	fread(header, 1, 4, f);
 	fclose(f);
 	return (header[3])-'0'; // Assumes ASCII char set.
+}
+
+
+// gzip section
+
+char *gzip_name = NULL;
+
+void find_gzip_compressor() {
+	string tempfile = getTmpFilename();
+	string command = "find `echo $PATH | tr ':' ' '` -iname 'gzip' -exec sh -c 'echo {};{} -V 2>&1|grep ^gzip' \\; 2> /dev/null > "
+		+ tempfile;
+
+	system(command.c_str());
+
+	FILE * fp;
+	char line[2*CHAR_MAX];
+	string fname;
+	fp = fopen(tempfile.c_str(), "r");
+	if (fp == NULL)
+		exit(EXIT_FAILURE);
+	while (fgets(line, 2*CHAR_MAX, fp)!=NULL) {
+		char *v = strstr(line, "gzip");       
+		if (v) {
+			int index=-1;
+			if (strncmp(v+5, "1.", 2) == 0) index=0;
+			if (index!=-1) {
+				gzip_name = new char[fname.length()];
+				strncpy(gzip_name, fname.c_str(), fname.length()-1);
+				gzip_name[fname.length()-1] = 0;
+				break;
+			}
+		}
+		fname = line;
+	}
+	if (verbose) {
+		if (gzip_name!=NULL) {
+			printf("found GNU gzip compressor/decompressor:\n");
+			printf("  %s\n", gzip_name);
+		}
+		else printf("GNU gzip compressor/decompressor NOT found!\n");
+	}
 }

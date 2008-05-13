@@ -31,7 +31,7 @@ using namespace std;
 #include "tmpstore.h"
 #include "filetypes.h"
 #include "system.h"
-#include "bzip2.h"
+#include "archfunc.h"
 
 bool force_overwrite = false, remove_intermediate = false,
 	info_mode = false, ensure_md5sum = false, use_bdelta = false;
@@ -147,34 +147,38 @@ void read_header(IStream &f, unsigned &version, unsigned &numpatches) {
 	if (version==2) numpatches = read_word(f); else numpatches = 1;
 }
 
-void gzip_without_header(string in, string out, char compression) {
-	string tempfile = getTmpFilename();
+bool gzip_without_header(string in, string out, char compression) {
+  	find_gzip_compressor();
+	if (gzip_name != NULL) {
+		string tempfile = getTmpFilename();
+	    deflate(gzip_name, in, tempfile, compression, false);
+	    
+	    // printf("here2 %s %s %c\n", in.c_str(), tempfile.c_str(), compression);
+	    unsigned filesize = getLenOfFile(tempfile);
+	    char inbuf[12];
+	    IFStream *f = new IFStream(tempfile);
+	    f->read(inbuf, 10);
+	    char flags = inbuf[3];
   
-	deflate("gzip", in, tempfile, compression, false);
-	// printf("here2 %s %s %c\n", in.c_str(), tempfile.c_str(), compression);
-	unsigned filesize = getLenOfFile(tempfile);
-	char inbuf[12];
-	IFStream *f = new IFStream(tempfile);
-	f->read(inbuf, 10);
-	char flags = inbuf[3];
-  
-	if (flags & 2) f->read(inbuf, 2);
-	if (flags & 4) {
+	    if (flags & 2) f->read(inbuf, 2);
+	    if (flags & 4) {
 		unsigned extrafieldsize = read_word(*f);
 		while (extrafieldsize) 
 			extrafieldsize -= f->read(inbuf, extrafieldsize<10?extrafieldsize:10);
-	}
-	if (flags & 8) do f->read(inbuf, 1); while (*inbuf);
-	if (flags & 16) do f->read(inbuf, 1); while (*inbuf);
-	if (flags & 32) f->read(inbuf, 2);
+	    }
+	    if (flags & 8) do f->read(inbuf, 1); while (*inbuf);
+	    if (flags & 16) do f->read(inbuf, 1); while (*inbuf);
+	    if (flags & 32) f->read(inbuf, 2);
   
-	OFStream o(out);
-	copy_bytes_to_file(*f, o, filesize-f->loc());
-	delete f;
-	doneTmpFile(tempfile);
+	    OFStream o(out);
+	    copy_bytes_to_file(*f, o, filesize-f->loc());
+	    delete f;
+		doneTmpFile(tempfile);
+	}
+	return gzip_name != NULL;
 }
 
-//stores known info about file, fields might be unset
+// Stores known info about file, fields might be unset.
 struct FileInfo {
 	string dir;   //directory where file is located
 	string name; //Filename
@@ -238,16 +242,21 @@ void createDelta(string oldfile, string newfile, string patchfname) {
 	doneTmpFile(file1.uname);
 	if (verbose) printf("Ensuring MD5sum will be correct\n");
 	if (file2.type==GZIP) {
+		bool gzip_found;
 		flags |= 1;
 		string gzip_temp = getTmpFilename();
 		const char *lev = "968712534";
 		do {
-			printf("here %c\n", *lev);
-			gzip_without_header(file2.uname, gzip_temp, *lev);
+			gzip_found = gzip_without_header(file2.uname, gzip_temp, *lev);
+			if (!gzip_found)
+				break;
 			makeDelta(use_bdelta, gzip_temp, file2.fullname(), pristineName);
 			++lev;
 		} while (*lev && getLenOfFile(pristineName)>1024);
-		if (!*lev) error("Unknown gzip compression format");
+		if (gzip_found == false)
+			error("Can't find GNU gzip");
+		if (!*lev) 
+			error("Unknown gzip compression format");
 		compression_level=*(lev-1)-'0';
 		doneTmpFile(gzip_temp);
 	} else if (file2.type==BZIP2) {
@@ -364,7 +373,10 @@ void finalize_package(FileInfo &f) {
 					bzip2_name[i]);
 			} else fprintf(stderr, "Error: Deltup cannot find the proper bzip2 to rebuild the package\n");
 			break;
-		case GZIP: gzip_without_header(f.uname, finalName, c); break;
+		case GZIP:
+		    if (gzip_without_header(f.uname, finalName, c) == false)
+				error("Can't find GNU gzip");
+		    break;
 		case UNKNOWN_FMT: cat(f.uname, finalName, false);
 	};
 	if (f.pristineName!="") {
@@ -517,14 +529,16 @@ void applyPatchfile(string fname) {
 	IStream *f = new IFStream(fname);
 	Injectable_IStream f2(*f);
 	if (((IFStream*)f)->bad()) {
-		fprintf(stderr, "file is missing: %s\n", fname.c_str()); return;}
+		fprintf(stderr, "file is missing: %s\n", fname.c_str()); 
+		exit(1);
+	}
 	unsigned type = determine_filetype(f2);
 	delete f;
 	switch (type) {
 		case GZIP: f = new GZ_IFStream(fname); break;
 		case BZIP2: f = new BZ_IFStream(fname); break;
 		case DTU: f = new IFStream(fname); break;
-		case UNKNOWN_FMT: fprintf(stderr, "cannot read file %s\n", fname.c_str()); return;
+		case UNKNOWN_FMT: fprintf(stderr, "cannot read file %s\n", fname.c_str()); exit(1);
 		case TARBALL :
 			f = new IFStream(fname);
 			unsigned zero_count;

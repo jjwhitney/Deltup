@@ -19,7 +19,7 @@
 using namespace std;
 #include "file.h"
 #include "bpatch.h"
-
+#include <sys/wait.h>
 #include "filetypes.h"
 
 bool verbose = false;

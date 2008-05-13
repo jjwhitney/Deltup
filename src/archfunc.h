@@ -17,3 +17,6 @@ extern char *bzip2_name[MAX_BZIP2_COMPRESSORS];
 extern char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS];
 void find_bzip2_compressors();
 int find_bz2_compression_level(string file);
+
+extern char *gzip_name;
+void find_gzip_compressor();

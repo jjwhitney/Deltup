@@ -1,16 +1,16 @@
 DESTDIR=
-PREFIX=/usr
+PREFIX=%%PREFIX%%
 BINDIR=$(PREFIX)/bin
 
 CC = g++
 
-objfiles=bpatch.o bzip2.o file.o system.o tmpstore.o deltup.o 
-libs=-lstdc++ -lz -lbz2 -lssl
+objfiles=bpatch.o archfunc.o file.o system.o tmpstore.o deltup.o 
+libs=-lstdc++ -lz -lbz2 -lcrypto #-lssl
 
 #edelta: edelta.cpp deltup
 #	gcc edelta.cpp ${CXXFLAGS} -o edelta
 %.o : %.cpp
-	${CC} -c $< -o $@ -g #-Wall -pedantic #-DFIXED_FRAMERATE
+	${CC} -c $< -o $@ ${CXXFLAGS} #-g #-Wall -pedantic
 
 all: deltup
 
