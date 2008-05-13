@@ -1,0 +1,76 @@
+.TH DELTUP 1 "13 May 2008"
+.SH NAME
+deltup \- Update a tarballed package
+.SH SYNOPSIS
+.B deltup -m[fvej] [bg #] [[-dD] 
+.I repository
+.B ]
+.I package1 package2 patchfile
+#make patch
+
+.B deltup -p[fvir] [[-dD]
+.I repository
+.B ]
+.I <patchfiles>
+#apply patches
+
+
+.SH DESCRIPTION
+Makes and applies patches to tarballed packages.  edelta is an alias which
+passes -d <portage distfiles dir> to deltup.
+.SH OPTIONS
+.TP
+.B -f
+Force overwrite if output file already exists
+.TP 
+.B -v
+Verbose mode
+.TP
+.B -e
+This special option tells deltup to test the patch against all available 
+compressors and write info about which ones work into the patch file
+.TP
+.B -j
+Use bdelta instead of xdelta when creating the patch.  This version of Deltup 
+has built-in support for applying bdelta patches, which makes installing
+xdelta unnecessary.
+.TP
+.B -b, -g
+Filter patch through bzip2 or gzip
+.TP
+.B -i
+Show what files would be patched without performing any actions.
+.TP
+.B -r
+Apply series of patches to one package without outputting the packages in
+between.
+.TP
+.B -d
+Output packages to directory
+.I repository
+.TP
+.B -d
+Find packages to upgrade in directory
+.I repository
+.SH ENVIORNMENT
+.TP
+.B TMPDIR
+Directory to output temporary files.  If not defined then /tmp is used.
+.SH EXAMPLES
+.TP
+.B Make bzip2'd Gentoo package patch:
+edelta -m -b 9 
+.I OldPackage
+.I NewPackage
+.I PatchFile
+.TP
+.B Apply the patch:
+edelta -p
+.I PatchFile
+.TP
+.B Make verified patch with the -e option:
+edelta -me -b 9 
+.I Package-v1.tar.bz2
+.I Package-v2.tar.bz2
+.I Package_Patch.dtu
+.TP

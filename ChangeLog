@@ -1,0 +1,147 @@
+12 July 2007; John Whitney <jjw@linuxmail.org> :
+	Fixed signed integer bug that caused wrong bzip2 compressor to be selected
+	Released 0.4.4
+24 March 2007; John Whitney <jjw@deltup.org> :
+	Changed license to GPL v.2 only
+	Applied Nicolai Lissner's patch to support the new bzip 1.04
+	Released 0.4.3
+3 July 2005; John Whitney <jjw@linuxmail.org> :
+	Fixed bug in bzip2 program detection
+	Released 0.4.3_pre2
+28 May 2005; John Whitney <jjw@linuxmail.org> :
+	Added signal handling
+	Released 0.4.3_pre1
+24 May 2005; John Whitney <jjw@linuxmail.org> :
+	Fixed small bugs
+31 May 2005; John Whitney <jjw@linuxmail.org> :
+	Removed outdated Gentoo scripts
+	Significant code restructuring - split into several source files
+	Added bzip2 detection code to find multiple compressors to try.
+	Now the bzip2 version is marked in the DTU file
+30 July 2003; John Whitney <jjw@linuxmail.org> :
+	bpatch is now integrated
+	code cleanups
+24 July 2003; John Whitney <jjw@linuxmail.org> :
+	Made efetch work when GENTOO_MIRRORS=""
+	Fixed mkdtudesc script
+15 October 2004; John Whitney <jjw@linuxmail.org> :
+	Fixed stupid bug in 0.4.1
+	Released version 0.4.2
+07 October 2004; John Whitney <jjw@linuxmail.org> :
+	Fixed a couple of bugs for GCC 3.4 in response to several user's complaints
+	Released version 0.4.1
+22 July 2003; John Whitney <jjw@linuxmail.org> :
+	Released version 0.4.0
+19 July 2003; John Whitney <jjw@linuxmail.org> :
+	Updated Format to include MD5sums of the tarballs
+	Now supports different delta algorithms, including bdelta
+	Various removals and enhancements
+	Fixed major gzip handling bug
+	Released version 0.4.0_pre1
+20 June 2003; John Whitney <jjw@linuxmail.org> :
+	Fixed huge bug with downloading packages to wrong dir
+	Now looks for new tarballs to copy from PACKAGE_PATH
+	Released version 0.3.7
+19 June 2003; John Whitney <jjw@linuxmail.org> :
+	Fixed some overlooked default fetch settings
+	Released version 0.3.7_pre2
+19 June 2003; John Whitney <jjw@linuxmail.org> :
+	Started use of C++ strings in deltup
+	Scripts now support PACKAGE_PATH for auxiliary repositories, and deltup now has the -D option to support this.
+	Released version 0.3.7_pre1
+18 June 2003; John Whitney <jjw@linuxmail.org> :
+	Added env vars:
+		PATCH_FETCHCOMMAND,
+		PATCH_RESUMECOMMAND,
+		PACKAGE_FETCHCOMMAND,
+		DTULISTDIR
+16 June 2003; John Whitney <jjw@linuxmail.org> :
+	Fixed two script bugs
+	Released version 0.3.6.1
+16 June 2003; John Whitney <jjw@linuxmail.org> :
+	Lots of little script changes
+	Released version 0.3.6
+15 June 2003; John Whitney <jjw@linuxmail.org> :
+	fixed little bug (must remove dtu.list before wget again)
+	added mkdtudesc script to determine dtu description lines from patch data
+14 June 2003; John Whitney <jjw@linuxmail.org> :
+	Made some serious progress towards complete integration with portage
+	Released version 0.3.5
+07 June 2003; John Whitney <jjw@linuxmail.org> :
+	Prevent segfault when Permission is denied while creating patch
+	Many small fixes in efetch script
+	Released version 0.3.4
+07 June 2003; John Whitney <jjw@linuxmail.org> :
+	Made old package finding much more reliable in efetch script
+	Added support for continuing the download of a patch
+	Made simple mkdtu script as a courtesy for Gentoo developers
+	Released version 0.3.3
+06 June 2003; John Whitney <jjw@linuxmail.org> :
+	Fixed slight problem with gzip + -r option
+	Wrote efetch script for auto-downloading patches
+	Released version 0.3.2
+04 June 2003; John Whitney <jjw@linuxmail.org> :
+	Removed endian checks in favor of a simple shift mechanism
+	Deltup now checks generated patches of bzip2 tarballs for consistency
+	Released version 0.3.1
+24 May 2003; John Whitney <jjw@linuxmail.org> :
+	Added support for tarred patches
+	Rewrite of patch_package
+	-e command line option + old bzip2 handling
+	Released version 0.3.0
+15 May 2003; John Whitney <jjw@linuxmail.org> :
+	Better temp file handling
+	Removed combined patch in favor of built in support for tar
+14 May 2003; John Whitney <jjw@linuxmail.org> :
+	Added b, g, and z compression flags
+	Built in support for compressed DTUs
+	Released version 0.2.8
+12 May 2003; John Whitney <jjw@linuxmail.org> :
+	More error checking.
+	Released version 0.2.7
+12 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	More trivial bugfixes
+	Output some errors to stderr
+	Made deltup man page
+	Released version 0.2.6
+10 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	Made a few changes and fixed small bugs
+	Released version 0.2.5
+9 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	Updated Readme
+	Added -i and -n flags
+	Fixed filename length limitation (a potential security bug)
+5 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	Added more output for verbose
+	Released version 0.2.4
+2 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	Trivial changes
+1 Apr 2003; John Whitney <jjw@linuxmail.org> :
+	Fixed a flaw in the gzip handling code
+	Added generic command line flags support and rfdv flags:
+		-r is used for consecutive package updates
+		-f to force overwrite of output file
+		-d to define working package directory
+		-v for verbose output
+	Released version 0.2.3
+31 Mar 2003; John Whitney <jjw@linuxmail.org> :
+	Changed patch format slightly to allow more flexibility
+	Removed support for old patch type (Either do it now, or support it forever!)
+	Added uncompressed package support
+	Recognize more compressed formats, but refuse to make patches for them
+	Fixed edelta bug: refused to accept absolute pathname to patch
+	Released version 0.2.2
+29 Mar 2003; John Whitney <jjw@linuxmail.org> :
+	Slight shrink for gzip deltas
+	Catch child signals and terminate
+	Released version 0.2.1
+28 Mar 2003; John Whitney <jjw@linuxmail.org> :
+	Improved bz2 compression detection.  MD5sum should now always be accurate.
+28 Mar 2003; John Whitney <jjw@linuxmail.org> :
+	Added support for big-endian machines (needs to be tested)
+	Support for any tarballed packages added
+	edelta now respects DISTDIR variable
+	Create temp dir, allowing parallel execution.
+	Released version 0.2
+27 Mar 2003; John Whitney <jjw@linuxmail.org> :
+	Released version 0.1
