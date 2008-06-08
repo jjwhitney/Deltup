@@ -25,9 +25,9 @@ using namespace std;
 // bzip2 section
 
 char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS] =
-	{"0.9.0c", "1.0.2", "1.0.3", "1.0.4"};
+	{"0.9.0c", "1.0.2", "1.0.3", "1.0.4", "1.0.5"};
 char *bzip2_name[MAX_BZIP2_COMPRESSORS] =
-	{NULL, NULL, NULL, NULL};
+	{NULL, NULL, NULL, NULL, NULL};
 
 void find_bzip2_compressors() {
 	string tempfile = getTmpFilename();
@@ -51,6 +51,7 @@ void find_bzip2_compressors() {
 			if (strncmp(v+8, "1.0.2", 5) == 0) index = 1;
 			if (strncmp(v+8, "1.0.3", 5) == 0) index = 2;
 			if (strncmp(v+8, "1.0.4", 5) == 0) index = 3;
+			if (strncmp(v+8, "1.0.5", 5) == 0) index = 4;
 			if (index!=-1) {
 				bzip2_name[index] = new char[fname.length()];
 				strncpy(bzip2_name[index], fname.c_str(), fname.length()-1);
