@@ -15,6 +15,8 @@
 #include <string>
 #include <list>
 using namespace std;
+#include <cstdio>
+#include <string.h>
 #include "file.h"
 
 int do_bdelta_patch(const char *reffname,

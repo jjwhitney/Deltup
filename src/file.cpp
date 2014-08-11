@@ -17,6 +17,8 @@
 #include <string>
 using namespace std;
 #include <list>
+#include <cstdlib>
+#include <string.h>
 #include "file.h"
 
 GZ_IFStream::GZ_IFStream(string fname) {file = gzopen(fname.c_str(), "rb");}

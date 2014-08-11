@@ -17,6 +17,9 @@
 #include <vector>
 #include <list>
 using namespace std;
+#include <cstdio>
+#include <string.h>
+#include <stdlib.h>
 #include "file.h"
 #include "system.h"
 #include <openssl/md5.h>

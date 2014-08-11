@@ -15,6 +15,10 @@
 #include <string>
 #include <list>
 using namespace std;
+#include <cstdio>
+#include <string.h>
+#include <stdlib.h>
+#include <limits.h>
 #include "file.h"
 #include "system.h"
 #include "tmpstore.h"
