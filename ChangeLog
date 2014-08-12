@@ -1,3 +1,10 @@
+12 Aug 2014; John Whitney <jjw@deltup.org> :
+	Fixed various compiler errors and warnings
+	Added support for version 1.0.6 of bzip2
+	Released 0.4.6
+25 Jun 2009; John Whitney <jjw@deltup.org> :
+	Fixed GCC 4.4 compile issues
+	Released 0.4.5
 12 July 2007; John Whitney <jjw@linuxmail.org> :
 	Fixed signed integer bug that caused wrong bzip2 compressor to be selected
 	Released 0.4.4
