@@ -22,12 +22,12 @@ using namespace std;
 #include "file.h"
 
 GZ_IFStream::GZ_IFStream(string fname) {file = gzopen(fname.c_str(), "rb");}
-GZ_IFStream::~GZ_IFStream() {if (!bad()) gzclose(file);}
-unsigned GZ_IFStream::read(void *data, unsigned num) {return gzread(file, data, num);}
+GZ_IFStream::~GZ_IFStream() {if (!bad()) gzclose((gzFile)file);}
+unsigned GZ_IFStream::read(void *data, unsigned num) {return gzread((gzFile)file, data, num);}
 
 GZ_OFStream::GZ_OFStream(string fname) {file = gzopen(fname.c_str(), "wb");}
-GZ_OFStream::~GZ_OFStream() {gzclose(file);}
-unsigned GZ_OFStream::write(const void *data, unsigned num) {return gzwrite(file, (voidp)data, num);}
+GZ_OFStream::~GZ_OFStream() {gzclose((gzFile)file);}
+unsigned GZ_OFStream::write(const void *data, unsigned num) {return gzwrite((gzFile)file, (voidp)data, num);}
 
 BZ_IFStream::BZ_IFStream(string fname) {file = BZ2_bzopen(fname.c_str(), "rb");}
 BZ_IFStream::~BZ_IFStream() {if (!bad()) BZ2_bzclose(file);}
