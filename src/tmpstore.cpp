@@ -73,7 +73,7 @@ void term_signal(int sig) {
 class init_TmpStore {
 public: 
 	init_TmpStore() {
-		char *tmpenv =  getenv("TMPDIR");
+		const char *tmpenv =  getenv("TMPDIR");
 		if (!tmpenv) tmpenv = "/tmp";
 		char *tmptemplate = new char[strlen(tmpenv)+9];
 		strcpy(tmptemplate, tmpenv);

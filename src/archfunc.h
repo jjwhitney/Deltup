@@ -14,7 +14,7 @@
 
 const int MAX_BZIP2_COMPRESSORS = 5;
 extern char *bzip2_name[MAX_BZIP2_COMPRESSORS];
-extern char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS];
+extern const char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS];
 void find_bzip2_compressors();
 int find_bz2_compression_level(string file);
 

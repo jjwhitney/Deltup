@@ -28,7 +28,7 @@ using namespace std;
 
 // bzip2 section
 
-char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS] =
+const char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS] =
 	{"0.9.0c", "1.0.2", "1.0.3", "1.0.4", "1.0.5"};
 char *bzip2_name[MAX_BZIP2_COMPRESSORS] =
 	{NULL, NULL, NULL, NULL, NULL};
