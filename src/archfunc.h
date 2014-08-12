@@ -12,7 +12,7 @@
  * Author: John Whitney <jjw@deltup.org>
  */
 
-const int MAX_BZIP2_COMPRESSORS = 5;
+const int MAX_BZIP2_COMPRESSORS = 6;
 extern char *bzip2_name[MAX_BZIP2_COMPRESSORS];
 extern const char *bzip2_compressor_name[MAX_BZIP2_COMPRESSORS];
 void find_bzip2_compressors();
